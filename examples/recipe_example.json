@@ -11,7 +11,12 @@
     "I": "Swipe Leg - L"
   },
   "patterns": {
-    "steal": "[ABCDEFGHI]*BC[ABCDEFGHI]*",
-    "bunt": "[ABCDEFGHI]*DI[ABCDEFGHI]*"
+    "simple": {
+      "steal": "BC",
+      "bunt": "DI",
+      "none": "EXCLUDE_ALL"
+    },
+    "complex": {
+    }
   }
 }
