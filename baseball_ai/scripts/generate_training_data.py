@@ -64,7 +64,7 @@ def main():
 
     recipe = TrainingRecipeSchema().load(next(json_stream))
     simple_values = list(recipe.patterns.simple.items())
-    valid_patterns = list(
+    valid_patterns = set(
         filter(lambda x: x != EXCLUDE_ALL, list(recipe.patterns.simple.values()))
     )
 
@@ -82,7 +82,7 @@ def main():
             choice = random.choice(simple_values)
             include = choice[1]
             include_list = [include] if include != EXCLUDE_ALL else []
-            exclude_list = [] if include != EXCLUDE_ALL else valid_patterns
+            exclude_set = valid_patterns - {include} if include != EXCLUDE_ALL else valid_patterns
             if args.fixed_input_size:
                 data = xeger.rstr(
                         alphabet,
@@ -92,7 +92,7 @@ def main():
             else:
                 data = xeger.rstr(alphabet, include=include_list)
 
-            if any([exclude in data for exclude in exclude_list]):
+            if any([exclude in data for exclude in exclude_set]):
                 continue
             else:
                 training_data[data] = choice[0].upper()
