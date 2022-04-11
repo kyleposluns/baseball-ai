@@ -12,13 +12,14 @@ from enum import Enum
 
 parser = argparse.ArgumentParser(description="Lets train a model")
 parser.add_argument("training_data_file", action="store", type=lambda p: Path(p).absolute())
+parser.add_argument("testing_data_file", action="store", type=lambda p: Path(p).absolute())
 
 class PlayResult(Enum):
     STEAL = [1, 0, 0]
     BUNT = [0, 1, 0]
     NONE = [0, 0, 1]
 
-def read_training_data(file):
+def read_data(file):
     inputs = []
     outputs = []
     with file.open() as f:
@@ -38,14 +39,17 @@ def read_training_data(file):
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    inputs, outputs = read_training_data(args.training_data_file)
+    training_inputs, training_outputs = read_data(args.training_data_file)
+    testing_inputs, testing_outputs = read_data(args.testing_data_file)
 
     model = Sequential([
-        Dense(5, input_dim=10, activation="sigmoid"),
+        Dense(10, input_dim=10, activation="sigmoid"),
+        Dense(10, activation="sigmoid"),
+        Dense(5, activation="sigmoid"),
         Dense(3, activation="sigmoid")
     ])
 
     model.compile(loss="mean_squared_error", optimizer="adam", metrics=["accuracy"])
-    model.fit(inputs, outputs, epochs=150, batch_size=10)
-    print(model.evaluate())
+    model.fit(training_inputs, training_outputs, epochs=150, batch_size=1000)
+    print(model.evaluate(testing_inputs, testing_outputs))
 
