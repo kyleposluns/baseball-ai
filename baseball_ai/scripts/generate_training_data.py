@@ -81,18 +81,22 @@ def main():
         else:
             choice = random.choice(simple_values)
             include = choice[1]
-            include_list = [include] if include != EXCLUDE_ALL else []
-            exclude_set = valid_patterns - {include} if include != EXCLUDE_ALL else valid_patterns
+            exclude_set = (
+                valid_patterns - {include} if include != EXCLUDE_ALL else valid_patterns
+            )
             if args.fixed_input_size:
-                data = xeger.rstr(
-                        alphabet,
-                        args.fixed_input_size,
-                        include=include_list
-                    )
+                data = xeger.rstr(alphabet, args.fixed_input_size)
             else:
-                data = xeger.rstr(alphabet, include=include_list)
+                data = xeger.rstr(alphabet)
 
-            if any([exclude in data for exclude in exclude_set]):
+            # insert sign
+            if include != EXCLUDE_ALL:
+                random_idx = random.randint(0, args.fixed_input_size - 1)
+                data = data[:random_idx] + include + data[random_idx + len(include):]
+
+            if any([exclude in data for exclude in exclude_set]) or (
+                args.fixed_input_size is not None and len(data) != args.fixed_input_size
+            ):
                 continue
             else:
                 training_data[data] = choice[0].upper()
