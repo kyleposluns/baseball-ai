@@ -30,7 +30,12 @@ def read_data(file):
         inputs.append([ord(character) for character in test])
         outputs.append(PlayResult[result].value)
 
-    return np.array(inputs), np.array(outputs)
+    inputs = np.array(inputs)
+    outputs = np.array(outputs)
+
+    input_norm = (inputs - inputs.min()) / (inputs.max() - inputs.min())
+
+    return input_norm, outputs
 
 
 
@@ -45,11 +50,11 @@ if __name__ == "__main__":
     model = Sequential([
         Dense(10, input_dim=10, activation="sigmoid"),
         Dense(10, activation="sigmoid"),
-        Dense(5, activation="sigmoid"),
+        Dense(10, activation="sigmoid"),
         Dense(3, activation="sigmoid")
     ])
 
-    model.compile(loss="mean_squared_error", optimizer="adam", metrics=["accuracy"])
+    model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(learning_rate=0.1), metrics=["accuracy"])
     model.fit(training_inputs, training_outputs, epochs=150, batch_size=1000)
     print(model.evaluate(testing_inputs, testing_outputs))
 
