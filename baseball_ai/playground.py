@@ -48,13 +48,13 @@ if __name__ == "__main__":
     testing_inputs, testing_outputs = read_data(args.testing_data_file)
 
     model = Sequential([
-        Dense(10, input_dim=10, activation="sigmoid"),
+        Dense(len(training_inputs[0]), activation="sigmoid"),
         Dense(10, activation="sigmoid"),
         Dense(10, activation="sigmoid"),
         Dense(3, activation="sigmoid")
     ])
 
-    model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(learning_rate=0.1), metrics=["accuracy"])
+    model.compile(loss=keras.losses.BinaryCrossentropy(), optimizer=keras.optimizers.Adam(learning_rate=0.1), metrics=["accuracy"])
     model.fit(training_inputs, training_outputs, epochs=150, batch_size=1000)
     print(model.evaluate(testing_inputs, testing_outputs))
 
