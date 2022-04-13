@@ -13,6 +13,9 @@ from enum import Enum
 parser = argparse.ArgumentParser(description="Lets train a model")
 parser.add_argument("training_data_file", action="store", type=lambda p: Path(p).absolute())
 parser.add_argument("testing_data_file", action="store", type=lambda p: Path(p).absolute())
+parser.add_argument("--learning-rate", action="store", type=float)
+parser.add_argument("--epochs", action="store", type=int)
+parser.add_argument("--batch-size", action="store", type=int)
 
 class PlayResult(Enum):
     STEAL = [1, 0, 0]
@@ -54,7 +57,7 @@ if __name__ == "__main__":
         Dense(3, activation="sigmoid")
     ])
 
-    model.compile(loss=keras.losses.BinaryCrossentropy(), optimizer=keras.optimizers.Adam(learning_rate=0.1), metrics=["accuracy"])
-    model.fit(training_inputs, training_outputs, epochs=150, batch_size=1000)
+    model.compile(loss=keras.losses.BinaryCrossentropy(), optimizer=keras.optimizers.Adam(learning_rate=args.learning_rate), metrics=["accuracy"])
+    model.fit(training_inputs, training_outputs, epochs=args.epochs, batch_size=args.batch_size)
     print(model.evaluate(testing_inputs, testing_outputs))
 
