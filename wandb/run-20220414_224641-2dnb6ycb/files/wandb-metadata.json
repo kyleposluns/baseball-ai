@@ -1,0 +1,25 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-04-15T02:46:47.088086",
+    "startedAt": "2022-04-15T02:46:41.939265",
+    "docker": null,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [
+        "examples/25000-training-examples.json",
+        "examples/25-training-examples.json"
+    ],
+    "state": "running",
+    "program": "/Users/michaelaperrotta/Desktop/AI/baseball-ai/baseball_ai/wandb_model.py",
+    "codePath": "baseball_ai/wandb_model.py",
+    "git": {
+        "remote": "git@github.com:kyleposluns/baseball-ai.git",
+        "commit": "7afc8c7d8d73b507a1807218f02017e131c7c0bf"
+    },
+    "email": null,
+    "root": "/Users/michaelaperrotta/Desktop/AI/baseball-ai",
+    "host": "michaelas-MacBook-Pro.local",
+    "username": "michaelaperrotta",
+    "executable": "/Users/michaelaperrotta/Desktop/AI/baseball-ai/cs4100/bin/python"
+}
