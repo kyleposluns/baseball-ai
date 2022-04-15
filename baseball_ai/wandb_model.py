@@ -1,3 +1,8 @@
+"""
+ This module is for visualizing and hyperparameter tuning using the Wandb library.
+ We build a custom model by overriding the Keras Model.
+ To run wandb, run: wandb login
+"""
 
 import numpy as np
 import os
@@ -75,7 +80,7 @@ if __name__ == "__main__":
 
     wandb.config = {
         "learning_rate": 0.01,
-        "epochs": 400,
+        "epochs": 1000,
         "batch_size": 200
     }
 
@@ -83,7 +88,7 @@ if __name__ == "__main__":
     inp = Input(shape=(10,))
     hidden = Dense(units=10, activation='sigmoid')(inp)
     hidden = Dense(units=64, activation='sigmoid')(hidden)
-    hidden = Dense(units=30, activation='sigmoid')(hidden)
+    #hidden = Dense(units=30, activation='sigmoid')(hidden)
     out = Dense(units=3, activation='sigmoid')(hidden)
     model = CustomModel(inp, out)
     
@@ -91,8 +96,10 @@ if __name__ == "__main__":
     model.fit(x_train, y_train, validation_data=(x_test, y_test), callbacks=[WandbCallback()])
 
     acc = model.evaluate(x_train, y_train)[1]
-    for i in range (10):
-        wandb.log({"accuracy": acc})
+    for i in range (100):
+        wandb.log({"accuracy": acc,
+                    "epoch": 5})
+
     # wandb.log({"epoch": 400, "accuracy": acc,
     #        "inputs": wandb.Image(inp),
     #        "logits": wandb.Histogram(out)})
