@@ -89,5 +89,13 @@ if __name__ == "__main__":
     
     model.compile(loss="mse", optimizer=keras.optimizers.Adam(learning_rate=0.01), metrics=["accuracy"])
     model.fit(x_train, y_train, validation_data=(x_test, y_test), callbacks=[WandbCallback()])
-    print(model.evaluate(x_train, y_train))
+
+    acc = model.evaluate(x_train, y_train)[1]
+    for i in range (10):
+        wandb.log({"accuracy": acc})
+    # wandb.log({"epoch": 400, "accuracy": acc,
+    #        "inputs": wandb.Image(inp),
+    #        "logits": wandb.Histogram(out)})
+
+    print('accuracy: ', acc)
 
