@@ -9,4 +9,9 @@ parameters:
   epochs:
     max: 500
     min: 150
+  learning_rate:
+    min: 0.001
+    max: 0.1
+  optimizer:
+    values: ["adam", "sgd"]
 program: /Users/michaelaperrotta/Desktop/AI/baseball-ai/baseball_ai/wandb_model.py

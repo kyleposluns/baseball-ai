@@ -3,6 +3,10 @@
  We build a custom model by overriding the Keras Model.
  To run wandb, run: wandb login
  sweep.yaml file is used to configure a new sweep. see https://docs.wandb.ai/guides/sweeps/quickstart
+ run sweep:
+   - wandb sweep sweep.yaml
+   - wandb agent <USERNAME/PROJECTNAME/SWEEPID>
+   for example, wandb agent cs4100/baseball-ai-baseball_ai/3a7psnxf
 """
 
 import numpy as np
@@ -79,6 +83,7 @@ if __name__ == "__main__":
     x_train, y_train = read_data(args.training_data_file)
     x_test, y_test = read_data(args.testing_data_file)
 
+    # Access all hyperparameter values through wandb.config
     wandb.config = {
         "learning_rate": 0.01,
         "epochs": 1000,
@@ -89,7 +94,6 @@ if __name__ == "__main__":
     inp = Input(shape=(10,))
     hidden = Dense(units=10, activation='sigmoid')(inp)
     hidden = Dense(units=64, activation='sigmoid')(hidden)
-    #hidden = Dense(units=30, activation='sigmoid')(hidden)
     out = Dense(units=3, activation='sigmoid')(hidden)
     model = CustomModel(inp, out)
     
@@ -97,13 +101,27 @@ if __name__ == "__main__":
     model.fit(x_train, y_train, validation_data=(x_test, y_test), callbacks=[WandbCallback()])
 
     acc = model.evaluate(x_train, y_train)[1]
-    for i in range (100):
+    for epoch in range(wandb.config["epochs"]):
         wandb.log({"accuracy": acc,
-                    "epoch": 5})
+                   "epoch": 5})
+                   
+    # # run a sweep to visualize hyperparameters
+    # sweep_config = {
+    #     'method': 'bayes',
+    #     'metric': {"name": "accuracy", "goal": "maximize"},
+    #     'parameters': {
+    #         'layers': {
+    #             'values': [10, 64, 128]
+    #         }
+    #     }
+    # }
 
-    # wandb.log({"epoch": 400, "accuracy": acc,
-    #        "inputs": wandb.Image(inp),
-    #        "logits": wandb.Histogram(out)})
+    # def my_train_func():
+    #     wandb.log({"accuracy": acc})
+
+    # sweep_id = wandb.sweep(sweep_config)
+    # # run the sweep
+    # wandb.agent(sweep_id, function=my_train_func)
 
     print('accuracy: ', acc)
 
