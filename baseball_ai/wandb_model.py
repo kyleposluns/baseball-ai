@@ -2,6 +2,7 @@
  This module is for visualizing and hyperparameter tuning using the Wandb library.
  We build a custom model by overriding the Keras Model.
  To run wandb, run: wandb login
+ sweep.yaml file is used to configure a new sweep. see https://docs.wandb.ai/guides/sweeps/quickstart
 """
 
 import numpy as np

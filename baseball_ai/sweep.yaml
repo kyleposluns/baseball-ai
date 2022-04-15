@@ -1,0 +1,12 @@
+method: bayes
+metric:
+  goal: minimize
+  name: loss
+parameters:
+  batch_size:
+    max: 250
+    min: 100
+  epochs:
+    max: 500
+    min: 150
+program: /Users/michaelaperrotta/Desktop/AI/baseball-ai/baseball_ai/wandb_model.py
