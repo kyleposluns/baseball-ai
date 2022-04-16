@@ -8,7 +8,9 @@ parser = argparse.ArgumentParser(description="Lets train a model")
 parser.add_argument(
     "training_data_file", action="store", type=lambda p: Path(p).absolute()
 )
-parser.add_argument("testing_data_file", action="store", type=lambda p: Path(p).absolute())
+parser.add_argument(
+    "testing_data_file", action="store", type=lambda p: Path(p).absolute()
+)
 
 
 def intersection(lst1, lst2):
@@ -38,6 +40,7 @@ def read_data_file(training_file):
 
     return list(training_data.keys()), list(training_data.values())
 
+
 def test(patterns, test_inputs, test_outputs):
     amt_correct = 0
     amt_seen = 0
@@ -51,15 +54,12 @@ def test(patterns, test_inputs, test_outputs):
                 chosen_output = result
                 break
 
-
         if output == chosen_output:
             amt_correct += 1
 
         amt_seen += 1
     accuracy = amt_correct / amt_seen
     print(f"Accuracy: {accuracy * 100}%")
-
-
 
 
 if __name__ == "__main__":
@@ -71,4 +71,3 @@ if __name__ == "__main__":
     patterns = find_patterns(training_inputs, training_outputs)
 
     test(patterns, test_inputs, test_outputs)
-
