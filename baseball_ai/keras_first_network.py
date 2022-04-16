@@ -1,13 +1,10 @@
 from numpy import loadtxt
 from argparse import ArgumentParser
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
 import numpy as np
 import json
 from pathlib import Path
-# from keras.models import Sequential
-# from keras.layers import Dense
+from keras.models import Sequential
+from keras.layers import Dense
 
 
 # To run: python keras_first_network.py
@@ -25,7 +22,7 @@ def load_tester(path):
 
 
 dataset = loadtxt('training.json', delimiter=',')
-split into input (X) and output (y) variables
+#split into input (X) and output (y) variables
 x = None
 y = None
 

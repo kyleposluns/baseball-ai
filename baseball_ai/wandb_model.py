@@ -27,16 +27,13 @@ from keras.models import Model
 import wandb
 from wandb.keras import WandbCallback
 
+from baseball_ai.util import read_data
+
 wandb.init(project="ai-project", entity="cs4100")
 
 parser = argparse.ArgumentParser(description="Lets train a model")
 parser.add_argument("training_data_file", action="store", type=lambda p: Path(p).absolute())
 parser.add_argument("testing_data_file", action="store", type=lambda p: Path(p).absolute())
-
-class PlayResult(Enum):
-    STEAL = [1, 0, 0]
-    BUNT = [0, 1, 0]
-    NONE = [0, 0, 1]
 
 class CustomModel(keras.Model):
     def train_step(self, data):
@@ -58,23 +55,6 @@ class CustomModel(keras.Model):
         # Return a dict mapping metric names to current value
         return {m.name: m.result() for m in self.metrics}   
 
-
-def read_data(file):
-    inputs = []
-    outputs = []
-    with file.open() as f:
-        training_data = json.load(f)
-
-    for test, result in training_data.items():
-
-        inputs.append([ord(character) for character in test])
-        outputs.append(PlayResult[result].value)
-
-    inputs = np.array(inputs)
-    outputs = np.array(outputs)
-
-    input_norm = (inputs - inputs.min()) / (inputs.max() - inputs.min())
-    return input_norm, outputs
 
 
 if __name__ == "__main__":
