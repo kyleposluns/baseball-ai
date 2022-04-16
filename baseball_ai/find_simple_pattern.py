@@ -2,8 +2,6 @@ import argparse
 import json
 from pathlib import Path
 
-from baseball_ai.util import read_data
-
 parser = argparse.ArgumentParser(description="Lets train a model")
 parser.add_argument(
     "training_data_file", action="store", type=lambda p: Path(p).absolute()
