@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from random import SystemRandom
 from typing import Dict
 
+import re
 import jsonstream
 from marshmallow import Schema, fields, post_load, pre_dump
 from rstr import Xeger
@@ -16,6 +17,7 @@ parser.add_argument(
     "--fixed-input-size", type=int, action="store", required=False, default=None
 )
 
+VARIABLE_LENGTH = "{1,10}"
 
 EXCLUDE_ALL = "EXCLUDE_ALL"
 
@@ -64,8 +66,11 @@ def main():
 
     recipe = TrainingRecipeSchema().load(next(json_stream))
     simple_values = list(recipe.patterns.simple.items())
-    valid_patterns = set(
+    valid_simple_patterns = set(
         filter(lambda x: x != EXCLUDE_ALL, list(recipe.patterns.simple.values()))
+    )
+    valid_complex_patterns = set(
+        filter(lambda x: x != EXCLUDE_ALL, list(recipe.patterns.complex.values()))
     )
 
     complex_values = list(recipe.patterns.complex.items())
@@ -73,16 +78,25 @@ def main():
     xeger = Xeger(SystemRandom())
 
     training_data = {}
-    alphabet = list(recipe.alphabet.keys())
+    alphabet = "".join(list(recipe.alphabet.keys()))
     while len(training_data) < args.size:
-        if len(recipe.patterns.complex) > 0 and random.random() < 0.5:
+        if len(recipe.patterns.complex) > 0:
             choice = random.choice(complex_values)
-            training_data[xeger.xeger(choice[1])] = choice[0].upper()
+            if choice[1] == EXCLUDE_ALL:
+                string = xeger.xeger(f"[{alphabet}]{VARIABLE_LENGTH}")[0:10+random.randint(-10, 10)]
+                while any([re.match(pattern, string) for pattern in valid_complex_patterns]):
+                    string = xeger.xeger(f"[{alphabet}]{VARIABLE_LENGTH}")[0:10+random.randint(-10, 10)]
+
+
+                training_data[string] = choice[0].upper()
+            else:
+                training_data[xeger.xeger(choice[1])] = choice[0].upper()
+
         else:
             choice = random.choice(simple_values)
             include = choice[1]
             exclude_set = (
-                valid_patterns - {include} if include != EXCLUDE_ALL else valid_patterns
+                valid_simple_patterns - {include} if include != EXCLUDE_ALL else valid_simple_patterns
             )
             if args.fixed_input_size:
                 data = xeger.rstr(alphabet, args.fixed_input_size)
