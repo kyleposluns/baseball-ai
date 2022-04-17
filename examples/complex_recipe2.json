@@ -1,0 +1,23 @@
+{
+  "alphabet": {
+    "A": "Swipe Arm - R",
+    "B": "Swipe Arm - L",
+    "C": "Tap Nose",
+    "D": "Tug Ear - R",
+    "E": "Tug Ear - L",
+    "F": "Touch Cap Brim",
+    "G": "Touch Belt Buckle",
+    "H": "Swipe Leg - R",
+    "I": "Swipe Leg - L"
+  },
+  "patterns": {
+    "simple": {
+    },
+    "complex": {
+      "steal": "[ABCDEGHI]{5}B[ABCDEGHI]{5}",
+      "bunt": "[ABCDEGHI]{6}B[ABCDEGHI]{6}",
+      "cancel": "[ABCDEGHI]{7}B[ABCDEGHI]{7}",
+      "none": "EXCLUDE_ALL"
+    }
+  }
+}

@@ -75,6 +75,5 @@ if __name__ == "__main__":
     test_inputs, test_outputs = read_data_file(args.testing_data_file)
 
     patterns = find_patterns(training_inputs, training_outputs)
-    print(patterns)
 
     test(patterns, test_inputs, test_outputs)
