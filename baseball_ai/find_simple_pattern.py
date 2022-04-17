@@ -54,7 +54,7 @@ def test(patterns, test_inputs, test_outputs):
         input = test_inputs[i]
         output = test_outputs[i]
 
-        chosen_output = None
+        chosen_output = "NONE"
         for pattern, result in patterns.items():
             if pattern != "" and pattern in input:
                 chosen_output = result
@@ -75,5 +75,6 @@ if __name__ == "__main__":
     test_inputs, test_outputs = read_data_file(args.testing_data_file)
 
     patterns = find_patterns(training_inputs, training_outputs)
+    print(patterns)
 
     test(patterns, test_inputs, test_outputs)
