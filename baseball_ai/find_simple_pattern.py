@@ -54,7 +54,7 @@ def test(patterns, test_inputs, test_outputs):
         input = test_inputs[i]
         output = test_outputs[i]
 
-        chosen_output = "NONE"
+        chosen_output = None
         for pattern, result in patterns.items():
             if pattern != "" and pattern in input:
                 chosen_output = result
