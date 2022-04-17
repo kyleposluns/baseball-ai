@@ -16,6 +16,13 @@ def intersection(lst1, lst2):
     return lst3
 
 
+def split_into_twos(string):
+    twos = []
+    for i in range(len(string) - 1):
+        twos.append(string[i:i+2])
+    return twos
+
+
 def find_patterns(training_inputs, training_outputs):
     output_to_pattern = {}
     for i in range(len(training_outputs)):
@@ -23,11 +30,12 @@ def find_patterns(training_inputs, training_outputs):
         output = training_outputs[i]
 
         if output not in output_to_pattern:
-            output_to_pattern[output] = list(input)
+            output_to_pattern[output] = split_into_twos(input)
         else:
-            output_to_pattern[output] = intersection(
-                output_to_pattern.get(output), list(input)
+            intersect = intersection(
+                output_to_pattern.get(output), split_into_twos(input)
             )
+            output_to_pattern[output] = intersect
 
     return {"".join(value): key for key, value in output_to_pattern.items()}
 
