@@ -14,9 +14,9 @@
     "simple": {
     },
     "complex": {
-      "steal": "AB[ABCDEGHI]{1,10}C",
-      "bunt": "[ABCDEGHI]{1,10}BE[ABCDEGHI]{1,10}",
-      "cancel": "[ABCDEGHI]{1,10}F[ABCDEGHI]{1,10}",
+      "steal": "AB[ABCDEGHI]{0,10}C",
+      "bunt": "[ABCDEGHI]{0,10}BE[ABCDEGHI]{0,10}",
+      "cancel": "[ABCDEGHI]{0,10}F[ABCDEGHI]{0,10}",
       "none": "EXCLUDE_ALL"
     }
   }
